@@ -9,17 +9,23 @@
 
 type P = Promise<number>;
 
-function add(promise1: P, promise2: P): P {
-  return Promise.allSettled([promise1, promise2]).then(([a, b]) => {
-    console.log('a', a);
-    console.log('b', b);
-    return a.status === 'fulfilled' && b.status === 'fulfilled' ? Promise.resolve(a.value + b.value) : Promise.reject('error');
-  });
+async function add(promise1: P, promise2: P): P {
+  // return Promise.allSettled([promise1, promise2]).then(([a, b]) => {
+  //   console.log('a', a);
+  //   console.log('b', b);
+  //   return a.status === 'fulfilled' && b.status === 'fulfilled' ? Promise.resolve(a.value + b.value) : Promise.reject('error');
+  // });
+
   // return Promise.all([promise1, promise2]).then(([a, b]) => {
   //   console.log('a', a);
   //   console.log('b', b);
   //   return a + b;
   // })
+
+  const [a, b] = await Promise.allSettled([promise1, promise2]);
+  console.log(a);
+  console.log(b);
+  return a.status === 'fulfilled' && b.status === 'fulfilled' ? Promise.resolve(a.value + b.value) : Promise.reject('error');
 }
 
 
